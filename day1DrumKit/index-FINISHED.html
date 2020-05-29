@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JS Drum Kit</title>
+  <link rel="stylesheet"
+    href="style.css">
+</head>
+
+<body>
+
+
+  <div class="keys">
+    <div data-key="65"
+      class="key">
+      <kbd>A</kbd>
+      <span class="sound">clap</span>
+    </div>
+    <div data-key="83"
+      class="key">
+      <kbd>S</kbd>
+      <span class="sound">hihat</span>
+    </div>
+    <div data-key="68"
+      class="key">
+      <kbd>D</kbd>
+      <span class="sound">kick</span>
+    </div>
+    <div data-key="70"
+      class="key">
+      <kbd>F</kbd>
+      <span class="sound">openhat</span>
+    </div>
+    <div data-key="71"
+      class="key">
+      <kbd>G</kbd>
+      <span class="sound">boom</span>
+    </div>
+    <div data-key="72"
+      class="key">
+      <kbd>H</kbd>
+      <span class="sound">ride</span>
+    </div>
+    <div data-key="74"
+      class="key">
+      <kbd>J</kbd>
+      <span class="sound">snare</span>
+    </div>
+    <div data-key="75"
+      class="key">
+      <kbd>K</kbd>
+      <span class="sound">tom</span>
+    </div>
+    <div data-key="76"
+      class="key">
+      <kbd>L</kbd>
+      <span class="sound">tink</span>
+    </div>
+  </div>
+
+  <audio data-key="65"
+    src="sounds/clap.wav"></audio>
+  <audio data-key="83"
+    src="sounds/hihat.wav"></audio>
+  <audio data-key="68"
+    src="sounds/kick.wav"></audio>
+  <audio data-key="70"
+    src="sounds/openhat.wav"></audio>
+  <audio data-key="71"
+    src="sounds/boom.wav"></audio>
+  <audio data-key="72"
+    src="sounds/ride.wav"></audio>
+  <audio data-key="74"
+    src="sounds/snare.wav"></audio>
+  <audio data-key="75"
+    src="sounds/tom.wav"></audio>
+  <audio data-key="76"
+    src="sounds/tink.wav"></audio>
+
+  <script>
+    //註冊按下鍵盤監聽事件
+    //取得按鍵鍵盤對應keycode
+    //播放對應音效
+    //動態掛載按下鍵盤效果
+    //移除動態效果
+
+    //移除動態效果
+    function removeTransition(e) {
+      //如果event的propertyName沒有transform效果就停止函式
+      if (e.propertyName !== 'transform') return;
+      //如果有就移除動態掛載playing class
+      e.target.classList.remove('playing');
+    }
+
+    //播放音效
+    function playSound(e) {
+      //使用querySelector取得audio的對應data-key keyCode並賦值給audio(HTML元素)
+      const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+      console.log(audio)
+      //使用querySelector取得div的對應data-key keyCode並賦值給key(HTML元素)
+      const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+      //如果audio無取到對應的設定值會回傳null,
+      if (!audio) return;
+      //動態掛載playing class
+      key.classList.add('playing');
+      //使音效播放時間可以即時重覆不延遲,來達到連續按下按鍵音效不中斷效果
+      audio.currentTime = 0;
+      //播放音效
+      audio.play();
+    }
+
+    //取得所有符合.key的選擇器並賦值給keys
+    const keys = Array.from(document.querySelectorAll('.key'));
+    //迭代註冊keys裡的每個一個key結束效果事件並call removeTransition移除效果
+    keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+    //註冊按下鍵盤事件並call playSound 播放音效與動態掛載playing class
+    window.addEventListener('keydown', playSound);
+  </script>
+
+
+</body>
+
+</html>
