@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Mouse Shadow</title>
+</head>
+
+<body>
+
+  <div class="hero">
+    <h1 contenteditable>🔥WOAH!</h1>
+  </div>
+
+  <style>
+    html {
+      color: black;
+      font-family: sans-serif;
+    }
+
+    body {
+      margin: 0;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: black;
+    }
+
+    h1 {
+      text-shadow: 10px 10px 0 rgba(0, 0, 0, 1);
+      font-size: 100px;
+    }
+  </style>
+
+  <script>
+    const hero = document.querySelector('.hero');
+    const heroText = document.querySelector('h1');
+    const walk = 100 //100px
+
+    function playShadow(e) {
+      //設定範圍
+      //取得元素本身寬度
+      const width = hero.offsetWidth;
+      //取得元素本身高度
+      const height = hero.offsetHeight;
+      //
+      let x = e.offsetX;
+      let y = e.offsetY;
+      // console.log(this, e.target)
+      // console.log(x, y)
+
+      //this為hero , e.target為觸發事件的對象
+      //當hero不是觸發事件時,子元素的offset＋子元素邊到容器邊的長度
+      if (this !== e.target) {
+        x = x + e.target.offsetLeft;
+        y = y + e.target.offsetTop;
+
+      }
+      //滑鼠位置/容器寬＊100 - (100/2)
+      const xWalk = Math.round((x / width * walk) - (walk / 2));
+      //滑鼠位置/容器長＊100 - (100/2)
+      const yWalk = Math.round((y / height * walk) - (walk / 2));
+
+      heroText.style.textShadow = `${xWalk}px ${yWalk}px 0 red,
+      ${xWalk * -1}px ${yWalk}px 0 lightgreen,
+      ${xWalk}px ${yWalk * -1}px 0 lightyellow,
+      ${xWalk * -1}px ${yWalk * -1}px 0 lightblue
+      `
+      // console.log(xWalk, yWalk)
+      // console.log(x, y)
+      // console.log(width, height)
+      // console.log(e);
+    }
+
+
+
+    hero.addEventListener('mousemove', playShadow);
+  </script>
+</body>
+
+</html>

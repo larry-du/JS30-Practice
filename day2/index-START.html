@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>JS + CSS Clock</title>
 </head>
+
 <body>
 
 
-    <div class="clock">
-      <div class="clock-face">
-        <div class="hand hour-hand"></div>
-        <div class="hand min-hand"></div>
-        <div class="hand second-hand"></div>
-      </div>
+  <div class="clock">
+    <div class="clock-face">
+      <div class="hand hour_hand"></div>
+      <div class="hand min_hand"></div>
+      <div class="hand second_hand"></div>
     </div>
+  </div>
 
 
   <style>
@@ -43,17 +45,18 @@
       position: relative;
       padding: 2rem;
       box-shadow:
-        0 0 0 4px rgba(0,0,0,0.1),
+        0 0 0 4px rgba(0, 0, 0, 0.1),
         inset 0 0 0 3px #EFEFEF,
         inset 0 0 10px black,
-        0 0 10px rgba(0,0,0,0.2);
+        0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .clock-face {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px); /* account for the height of the clock hands */
+      transform: translateY(-3px);
+      /* account for the height of the clock hands */
     }
 
     .hand {
@@ -61,14 +64,83 @@
       height: 6px;
       background: black;
       position: absolute;
+      transform-origin: right;
       top: 50%;
     }
 
+    .second_hand {
+      background-color: lightgreen;
+    }
+
+    .min_hand {
+      /* width: 30%; */
+      background-color: red;
+    }
+
+    .hour_hand {
+      /* width: 40%; */
+      background-color: blue;
+    }
   </style>
 
   <script>
 
+    function getHandRotate() {
+      //取得三個class(hour、min、second)
+      const hourHand = document.querySelector(".hour_hand");
+      const minHand = document.querySelector(".min_hand");
+      const secondHand = document.querySelector(".second_hand");
+
+      //取得現在日期
+      const now = new Date();
+      //取得當下秒數和兌換角度
+      const secondDeg = now.getSeconds() * 360 / 60 + 90;
+      //取得當下分鐘和兌換角度
+      const minDeg = now.getMinutes() * 360 / 60 + 90;
+      //取得當下小時和兌換角度
+      const hourDeg = now.getHours() * 360 / 12 + 90;
+
+      secondHand.style.transform = `rotate(${secondDeg}deg)`;
+      minHand.style.transform = `rotate(${minDeg}deg)`;
+      hourHand.style.transform = `rotate(${hourDeg}deg)`;
+      // console.log(now.toJSON());
+      window.requestAnimationFrame(getHandRotate)
+    };
+
+    // getHandRotate();
+    // setInterval(getHandRotate, 1000);
+    // setTimeout(() => { console.log("asd") }, 1000)
+
+    window.requestAnimationFrame(getHandRotate);
+
+
+    // (function getHandRotate() {
+    //   //取得三個class(hour、min、second)
+    //   const hourHand = document.querySelector(".hour_hand");
+    //   const minHand = document.querySelector(".min_hand");
+    //   const secondHand = document.querySelector(".second_hand");
+
+    //   //取得現在日期
+    //   const now = new Date();
+    //   //取得當下秒數和兌換角度
+    //   const secondDeg = now.getSeconds() * 360 / 60 + 90;
+    //   //取得當下分鐘和兌換角度
+    //   const minDeg = now.getMinutes() * 360 / 60 + 90;
+    //   //取得當下小時和兌換角度
+    //   const hourDeg = now.getHours() * 360 / 12 + 90;
+
+    //   secondHand.style.transform = `rotate(${secondDeg}deg)`;
+    //   minHand.style.transform = `rotate(${minDeg}deg)`;
+    //   hourHand.style.transform = `rotate(${hourDeg}deg)`;
+    // })();
+
+
+    // // getHandRotate();
+    // setInterval(getHandRotate, 1000);
+
+
 
   </script>
 </body>
+
 </html>

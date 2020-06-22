@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="outer">
+        <div class="inner">mouse</div>
+    </div>
+
+    <script>
+        let outer = document.querySelector('.outer');
+        let inner = document.querySelector('.inner');
+
+        function outerenter() {
+            console.log('outer mouseenter');
+        }
+        function innerenter() {
+            console.log('inner mouseenter');
+        }
+        function outerover() {
+            console.log('outer mouseover');
+        }
+        function innerover() {
+            console.log('inner mouseover');
+        }
+
+        outer.addEventListener('mouseenter', outerenter);
+        inner.addEventListener('mouseenter', innerenter);
+        outer.addEventListener('mouseover', outerover);
+        inner.addEventListener('mouseover', innerover);
+
+        // oo
+        // oio 
+        // o 
+        // i
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Detection</title>
+</head>
+
+<body>
+
+  <div class="words"
+    contenteditable>
+  </div>
+
+  <script>
+    //語音辨識
+    window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.interimResults = true;
+    //設定語系
+    recognition.lang = 'zh-Hant';
+
+    let p = document.createElement('p');
+    const words = document.querySelector('.words');
+    words.appendChild(p);
+
+    //註冊監聽事件,當SpeechRecognition有結果時,代表偵測到語音後
+    recognition.addEventListener('result', e => {
+      // console.log(e)
+      // console.log(e.results);
+      //將取得的SpeechRecognitionResultList轉為陣列進行處理
+      const transcript = Array.from(e.results)
+        //取得RecognitionResult
+        .map(result => result[0])
+        //取得transcript
+        .map(result => result.transcript)
+        //轉成文字
+        .join('');
+      // console.log(transcript)
+      //將取得文字插入p標籤
+      p.textContent = transcript;
+
+      //.isFinal可判斷當前語音文字是否結束,將輸入文字加到下一行
+      if (e.results[0].isFinal) {
+        p = document.createElement('p')
+        words.appendChild(p);
+      }
+
+      //自行設定關鍵字,如果是true可作其他動作如:跑其他程式等
+      // if (transcript.includes('something')) {
+      //   console.log('run function');
+      // }
+    });
+
+    //註冊事件,當偵測到語音輸入結束後再次執行recognition.start ,讓網頁一直保持語音偵測
+    recognition.addEventListener('end', recognition.start)
+    recognition.start();
+
+  </script>
+  <style>
+    html {
+      font-size: 10px;
+    }
+
+    body {
+      background: #ffc600;
+      font-family: 'helvetica neue';
+      font-weight: 200;
+      font-size: 20px;
+    }
+
+    .words {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem 1rem 5rem;
+      background: -webkit-gradient(linear, 0 0, 0 100%, from(#d9eaf3), color-stop(4%, #fff)) 0 4px;
+      background-size: 100% 3rem;
+      position: relative;
+      line-height: 3rem;
+    }
+
+    p {
+      margin: 0 0 3rem;
+    }
+
+    .words:before {
+      content: '';
+      position: absolute;
+      width: 4px;
+      top: 0;
+      left: 30px;
+      bottom: 0;
+      border: 1px solid;
+      border-color: transparent #efe4e4;
+    }
+  </style>
+
+</body>
+
+</html>

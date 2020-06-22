@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Speech Synthesis</title>
+  <link href='https://fonts.googleapis.com/css?family=Pacifico'
+    rel='stylesheet'
+    type='text/css'>
+  <link rel="stylesheet"
+    href="style.css">
+</head>
+
+<body>
+
+  <div class="voiceinator">
+
+    <h1>The Voiceinator 5000</h1>
+
+    <select name="voice"
+      id="voices">
+      <option value="">Select A Voice</option>
+    </select>
+
+    <label for="rate">Rate:</label>
+    <input name="rate"
+      type="range"
+      min="0"
+      max="3"
+      value="1"
+      step="0.1">
+
+    <label for="pitch">Pitch:</label>
+
+    <input name="pitch"
+      type="range"
+      min="0"
+      max="2"
+      step="0.1">
+    <textarea name="text">Hello! I love JavaScript 👍</textarea>
+    <button id="stop">Stop!</button>
+    <button id="speak">Speak</button>
+
+  </div>
+
+  <script>
+    const msg = new SpeechSynthesisUtterance();
+    let voices = [];
+    const voicesDropdown = document.querySelector('[name="voice"]');
+    const options = document.querySelectorAll('[type="range"], [name="text"]');
+    const speakButton = document.querySelector('#speak');
+    const stopButton = document.querySelector('#stop');
+    //name屬性是text的元素取出內容文字(value)並賦值到msg的text
+    msg.text = document.querySelector('[name=text]').value;
+
+    function populateVoices() {
+      //取得聲音模組
+      voices = this.getVoices();
+      // console.log(voices);
+      //對所有聲音模組加上<option> 
+      const voicesOption = voices
+        //將對應英文過濾出來
+        .filter(voice => voice.lang.includes('en'))
+        .map(voice => `<option value="${voice.name}">${voice.name}(${voice.value})</option>`)
+        .join('');
+      voicesDropdown.innerHTML = voicesOption;
+    }
+
+    //取得名字與聲音對應並可執行播放
+    function setVoice() {
+      //設定msg的聲音為對應的名字
+      msg.voice = voices.find(voice => voice.name === this.value);
+      toggle();
+    }
+
+    //關閉和開啟聲音
+    function toggle(startOver = true) {
+      speechSynthesis.cancel();
+      if (startOver) {
+        speechSynthesis.speak(msg);
+      }
+    }
+
+    function setOption() {
+      // console.log(this.name, this.value);
+      //當移動對應的拉桿,將屬性設定到msg與對應數值
+      msg[this.name] = this.value;
+    }
+    //當語音對象改變時會觸發
+    speechSynthesis.addEventListener('voiceschanged', populateVoices);
+    //當表單更改時觸發setVoice
+    voicesDropdown.addEventListener('change', setVoice);
+    //當表單更改時觸發setOption
+    options.forEach(option => option.addEventListener('change', setOption));
+    speakButton.addEventListener('click', toggle);
+    stopButton.addEventListener('click', () => toggle(false));
+
+
+  </script>
+
+</body>
+
+</html>

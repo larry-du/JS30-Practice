@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Key Detection</title>
+  <script type="text/javascript"
+    src="https://www.cornify.com/js/cornify.js"></script>
+  <script type="text/javascript"
+    src="./test.js"></script>
+
+</head>
+
+<body>
+
+  <script>
+    // //儲存按下的鍵盤
+    function keydownHandler() {
+      let wordsArray = [];
+      return {
+        pushWord(key) {
+          wordsArray.push(key);
+        },
+        getWords(key) {
+          return wordsArray.join('');
+        }
+      }
+    }
+
+    //比對特定文字
+    function playResult(key) {
+      //自行設定文字
+      const keyWord = "abc";
+      if (key === keyWord) {
+        return true;
+      }
+    }
+
+    let wordsHandle = keydownHandler();
+
+    //註冊按下鍵盤事件
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+      let reg = /[0-9]|[a-z]|[A-Z]/g;
+      //輸入只接受英文字母與數字
+      if (reg.test(key) && key.length == 1) {
+        wordsHandle.pushWord(key);
+      }
+      //輸入特定文字有特效
+      if (playResult(wordsHandle.getWords())) {
+        console.log("done")
+        test();
+        // test();
+      }
+    });
+
+  </script>
+</body>
+
+</html>

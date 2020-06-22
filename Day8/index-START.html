@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>HTML5 Canvas</title>
+</head>
+
+<body>
+  <canvas id="draw"
+    width="800"
+    height="800"></canvas>
+  <script>
+    const canvas = document.querySelector("#draw");
+    const ctx = canvas.getContext(`2d`);
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    //指定顏色
+    ctx.strokeStyle = "#BADA55";
+    //指定兩線連接處為圓型
+    ctx.lineJoin = "round";
+    //指定線段結束處為圓型
+    ctx.lineCap = "round";
+    //設定繪製線條粗細
+    // ctx.lineWidth = 100;
+
+    //使顏色可交疊,最後會是黑色
+    // ctx.globalCompositeOperation = "multiply";
+    //設定一個標記當按下滑鼠時為true,放開為false
+    let isDrawing = false;
+    //canvas需設定起始與結束點,故先設定結束的x,y座標
+    let lastX = 0;
+    let lastY = 0;
+    //設定色相初始為0;
+    let hue = 0;
+    let direction = true;
+
+    function draw(e) {
+      //當不是按下滑鼠時,不繪製
+      if (!isDrawing) return
+      console.log(e);
+      //使用hsl並設定初始值為0,色彩飽和度100%,色彩亮度50%
+      ctx.strokeStyle = `hsl(${hue},100%,50%)`;
+      //使線粗隨著色相變粗
+      ctx.lineWidth = hue;
+      ctx.beginPath();
+      //設置canvas起始點
+      ctx.moveTo(lastX, lastY);
+      //設置canvas結束點
+      ctx.lineTo(e.offsetX, e.offsetY);
+      ctx.stroke();
+      //使起始點變數更改為offset座標,讓線條有跟著滑鼠移動效果
+      //希望寫為一行,使用陣列解構方式取得lastX,lastY
+      [lastX, lastY] = [e.offsetX, e.offsetY];
+      // lastX = e.offsetX;
+      // lastY = e.offsetY;
+      //使hue可以變化數值來變化色彩
+      hue++;
+      //當色相大於等於360,重設數值使色相從紅色開始
+      if (hue >= 360) {
+        hue = 0;
+      }
+
+      //設定條件當線粗大於等於100,小於等於1,將direction反向
+      if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        direction = !direction;
+      }
+
+      if (direction) {
+        ctx.direction++;
+      } else {
+        ctx.direction--;
+      }
+
+    }
+    //當按下滑鼠為起始
+    canvas.addEventListener("mousedown", (e) => {
+      isDrawing = true,
+        //按下滑鼠時會更新lastX和lastY座標,而不是從(0,0)開始
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+    });
+    //當移動滑鼠開始繪製
+    canvas.addEventListener("mousemove", draw);
+    //當不點擊滑鼠不繪製
+    canvas.addEventListener("mouseup", () => isDrawing = false);
+    //當滑鼠移出元素不繪製
+    canvas.addEventListener("mouseout", () => isDrawing = false);
+
+
+
+  </script>
+
+  <style>
+    html,
+    body {
+      margin: 0;
+    }
+  </style>
+
+</body>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li>
+            <input type="text">
+            <label for="">awefaef</label>
+        </li>
+        <li>
+            <input type="text">
+            <label for="">qtrtyu</label>
+        </li>
+        <li>
+            <input type="text">
+            <label for="">qtrtyu</label>
+        </li>
+    </ul>
+    <script>
+        const ul = document.querySelector('ul');
+        const li = document.querySelector('li')
+
+
+        // function stop(e) {
+        //     // console.log(e);
+        //     // console.log(e.eventPhase);
+        //     // console.log(this);
+        //     //事件監聽
+        //     // console.log(e.currentTarget);
+        //     // //觸發事件
+        //     // console.log(e.target)
+        //     // console.log(this)
+        //     // console.log(e.target)
+        //     // if (e.target.matches('ul')) {
+        //     //     console.log('ul');
+        //     // }
+        //     // if (e.target.matches('input')) {
+        //     //     console.log('input');
+        //     // }
+        //     // if (e.target.matches('label')) {
+        //     //     console.log('label');
+        //     // }
+        //     // e.stopPropagation();
+        // 1
+
+
+
+        ul.addEventListener('click', (e) => {
+            console.log(e)
+            console.log('list capturing', e.eventPhase)
+            e.stopPropagation();
+        }, true);
+        li.addEventListener('click', (e) => {
+            console.log('list bubbling', e.eventPhase);
+
+        }, false);
+
+
+
+    </script>
+</body>
+
+</html>
