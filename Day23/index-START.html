@@ -86,7 +86,7 @@
       //當移動對應的拉桿,將屬性設定到msg與對應數值
       msg[this.name] = this.value;
     }
-    //當語音對象改變時會觸發
+    //當語音對象安裝或移除且拿到語音列表後才觸發
     speechSynthesis.addEventListener('voiceschanged', populateVoices);
     //當表單更改時觸發setVoice
     voicesDropdown.addEventListener('change', setVoice);

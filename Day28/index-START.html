@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Video Speed Scrubber</title>
+  <link rel="stylesheet"
+    href="style.css">
+</head>
+
+<body>
+
+  <div class="wrapper">
+    <video class="flex"
+      width="765"
+      height="430"
+      src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
+      loop
+      controls></video>
+    <div class="speed">
+      <div class="speed-bar">1×</div>
+    </div>
+  </div>
+
+  <script>
+    const speed = document.querySelector('.speed');
+    const bar = document.querySelector('.speed-bar')
+    const video = document.querySelector('video');
+
+    function playSpeed(e) {
+      //滑鼠點擊位置到最上方的座標 - 元素頂部到view port座標 = 拉桿Ｙ軸位置
+      const y = e.pageY - this.offsetTop;
+      //拉桿Ｙ軸位置/總高度 = 百分比高度
+      const percent = y / this.offsetHeight;
+      //取得百分比
+      const height = Math.round(percent * 100) + '%';
+      //設定最大與最小值避免播放速度為0和無限大
+      const min = 0.4;
+      const max = 4;
+      //設定播放速度
+      const playbackRate = percent * (max - min) + min;
+      //設定拉桿高度可隨點擊或滑鼠移動位置變化
+      bar.style.height = height;
+      //將顯示速率加速
+      bar.textContent = playbackRate.toFixed(2) + 'x';
+      //設置video.playbackRate速度
+      video.playbackRate = playbackRate;
+    }
+    // speed.addEventListener('mousemove', playSpeed);
+    speed.addEventListener('click', playSpeed);
+  </script>
+</body>
+
+</html>
